@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package olympus.platform.v1;
+
+option go_package = "OlympusGCP-Platform/40000-Communication-Contracts/430-Protocol-Definitions/000-gen/platform/v1;platformv1";
+
+service PlatformService {
+  // --- Artifact Registry ---
+  rpc PushImage(PushRequest) returns (StatusResponse);
+  rpc ListImages(ListRequest) returns (ListResponse);
+
+  // --- Cloud Logging & Monitoring ---
+  rpc WriteLog(LogRequest) returns (StatusResponse);
+  rpc RecordMetric(MetricRequest) returns (StatusResponse);
+
+  // --- API Gateway (Expansion) ---
+  rpc ValidateSpec(SpecRequest) returns (StatusResponse);
+}
+
+message StatusResponse { bool success = 1; }
+message ListRequest {}
+message ListResponse { repeated string items = 1; }
+
+// Artifact Messages
+message PushRequest { string image = 1; bytes data = 2; }
+
+// Observability Messages
+message LogRequest { string log_name = 1; string message = 2; }
+message MetricRequest { string name = 1; double value = 2; }
+
+// API Gateway Messages
+message SpecRequest { string openapi_json = 1; }
