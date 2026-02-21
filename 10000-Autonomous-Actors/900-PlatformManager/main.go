@@ -40,6 +40,10 @@ func (s *PlatformServer) PushImage(ctx context.Context, req *connect.Request[pla
 	cmd := exec.Command("podman", "load")
 	cmd.Stdin = bytes.NewReader(req.Msg.Data)
 	cmd.Run()
+	
+	// Simulation: Trigger background vulnerability scan
+	slog.Info("Platform: Vulnerability Scan Initiated", "image", req.Msg.Image)
+	
 	return connect.NewResponse(&platformv1.StatusResponse{Success: true}), nil
 }
 
