@@ -348,6 +348,119 @@ func (x *SpecRequest) GetOpenapiJson() string {
 	return ""
 }
 
+// Cloud Build Messages
+type CloudBuildRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BuildYaml     string                 `protobuf:"bytes,1,opt,name=build_yaml,json=buildYaml,proto3" json:"build_yaml,omitempty"`
+	WorkspacePath string                 `protobuf:"bytes,2,opt,name=workspace_path,json=workspacePath,proto3" json:"workspace_path,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CloudBuildRequest) Reset() {
+	*x = CloudBuildRequest{}
+	mi := &file_olympus_platform_v1_platform_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CloudBuildRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CloudBuildRequest) ProtoMessage() {}
+
+func (x *CloudBuildRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_olympus_platform_v1_platform_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CloudBuildRequest.ProtoReflect.Descriptor instead.
+func (*CloudBuildRequest) Descriptor() ([]byte, []int) {
+	return file_olympus_platform_v1_platform_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *CloudBuildRequest) GetBuildYaml() string {
+	if x != nil {
+		return x.BuildYaml
+	}
+	return ""
+}
+
+func (x *CloudBuildRequest) GetWorkspacePath() string {
+	if x != nil {
+		return x.WorkspacePath
+	}
+	return ""
+}
+
+type CloudBuildResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BuildId       string                 `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	Status        string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	LogTail       string                 `protobuf:"bytes,3,opt,name=log_tail,json=logTail,proto3" json:"log_tail,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CloudBuildResponse) Reset() {
+	*x = CloudBuildResponse{}
+	mi := &file_olympus_platform_v1_platform_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CloudBuildResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CloudBuildResponse) ProtoMessage() {}
+
+func (x *CloudBuildResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_olympus_platform_v1_platform_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CloudBuildResponse.ProtoReflect.Descriptor instead.
+func (*CloudBuildResponse) Descriptor() ([]byte, []int) {
+	return file_olympus_platform_v1_platform_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *CloudBuildResponse) GetBuildId() string {
+	if x != nil {
+		return x.BuildId
+	}
+	return ""
+}
+
+func (x *CloudBuildResponse) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *CloudBuildResponse) GetLogTail() string {
+	if x != nil {
+		return x.LogTail
+	}
+	return ""
+}
+
 var File_olympus_platform_v1_platform_proto protoreflect.FileDescriptor
 
 const file_olympus_platform_v1_platform_proto_rawDesc = "" +
@@ -369,14 +482,23 @@ const file_olympus_platform_v1_platform_proto_rawDesc = "" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\x01R\x05value\"0\n" +
 	"\vSpecRequest\x12!\n" +
-	"\fopenapi_json\x18\x01 \x01(\tR\vopenapiJson2\xba\x03\n" +
+	"\fopenapi_json\x18\x01 \x01(\tR\vopenapiJson\"Y\n" +
+	"\x11CloudBuildRequest\x12\x1d\n" +
+	"\n" +
+	"build_yaml\x18\x01 \x01(\tR\tbuildYaml\x12%\n" +
+	"\x0eworkspace_path\x18\x02 \x01(\tR\rworkspacePath\"b\n" +
+	"\x12CloudBuildResponse\x12\x19\n" +
+	"\bbuild_id\x18\x01 \x01(\tR\abuildId\x12\x16\n" +
+	"\x06status\x18\x02 \x01(\tR\x06status\x12\x19\n" +
+	"\blog_tail\x18\x03 \x01(\tR\alogTail2\x9b\x04\n" +
 	"\x0fPlatformService\x12R\n" +
 	"\tPushImage\x12 .olympus.platform.v1.PushRequest\x1a#.olympus.platform.v1.StatusResponse\x12Q\n" +
 	"\n" +
 	"ListImages\x12 .olympus.platform.v1.ListRequest\x1a!.olympus.platform.v1.ListResponse\x12P\n" +
 	"\bWriteLog\x12\x1f.olympus.platform.v1.LogRequest\x1a#.olympus.platform.v1.StatusResponse\x12W\n" +
 	"\fRecordMetric\x12\".olympus.platform.v1.MetricRequest\x1a#.olympus.platform.v1.StatusResponse\x12U\n" +
-	"\fValidateSpec\x12 .olympus.platform.v1.SpecRequest\x1a#.olympus.platform.v1.StatusResponseBkZiOlympusGCP-Platform/40000-Communication-Contracts/430-Protocol-Definitions/000-gen/platform/v1;platformv1b\x06proto3"
+	"\fValidateSpec\x12 .olympus.platform.v1.SpecRequest\x1a#.olympus.platform.v1.StatusResponse\x12_\n" +
+	"\fExecuteBuild\x12&.olympus.platform.v1.CloudBuildRequest\x1a'.olympus.platform.v1.CloudBuildResponseBkZiOlympusGCP-Platform/40000-Communication-Contracts/430-Protocol-Definitions/000-gen/platform/v1;platformv1b\x06proto3"
 
 var (
 	file_olympus_platform_v1_platform_proto_rawDescOnce sync.Once
@@ -390,15 +512,17 @@ func file_olympus_platform_v1_platform_proto_rawDescGZIP() []byte {
 	return file_olympus_platform_v1_platform_proto_rawDescData
 }
 
-var file_olympus_platform_v1_platform_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_olympus_platform_v1_platform_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_olympus_platform_v1_platform_proto_goTypes = []any{
-	(*StatusResponse)(nil), // 0: olympus.platform.v1.StatusResponse
-	(*ListRequest)(nil),    // 1: olympus.platform.v1.ListRequest
-	(*ListResponse)(nil),   // 2: olympus.platform.v1.ListResponse
-	(*PushRequest)(nil),    // 3: olympus.platform.v1.PushRequest
-	(*LogRequest)(nil),     // 4: olympus.platform.v1.LogRequest
-	(*MetricRequest)(nil),  // 5: olympus.platform.v1.MetricRequest
-	(*SpecRequest)(nil),    // 6: olympus.platform.v1.SpecRequest
+	(*StatusResponse)(nil),     // 0: olympus.platform.v1.StatusResponse
+	(*ListRequest)(nil),        // 1: olympus.platform.v1.ListRequest
+	(*ListResponse)(nil),       // 2: olympus.platform.v1.ListResponse
+	(*PushRequest)(nil),        // 3: olympus.platform.v1.PushRequest
+	(*LogRequest)(nil),         // 4: olympus.platform.v1.LogRequest
+	(*MetricRequest)(nil),      // 5: olympus.platform.v1.MetricRequest
+	(*SpecRequest)(nil),        // 6: olympus.platform.v1.SpecRequest
+	(*CloudBuildRequest)(nil),  // 7: olympus.platform.v1.CloudBuildRequest
+	(*CloudBuildResponse)(nil), // 8: olympus.platform.v1.CloudBuildResponse
 }
 var file_olympus_platform_v1_platform_proto_depIdxs = []int32{
 	3, // 0: olympus.platform.v1.PlatformService.PushImage:input_type -> olympus.platform.v1.PushRequest
@@ -406,13 +530,15 @@ var file_olympus_platform_v1_platform_proto_depIdxs = []int32{
 	4, // 2: olympus.platform.v1.PlatformService.WriteLog:input_type -> olympus.platform.v1.LogRequest
 	5, // 3: olympus.platform.v1.PlatformService.RecordMetric:input_type -> olympus.platform.v1.MetricRequest
 	6, // 4: olympus.platform.v1.PlatformService.ValidateSpec:input_type -> olympus.platform.v1.SpecRequest
-	0, // 5: olympus.platform.v1.PlatformService.PushImage:output_type -> olympus.platform.v1.StatusResponse
-	2, // 6: olympus.platform.v1.PlatformService.ListImages:output_type -> olympus.platform.v1.ListResponse
-	0, // 7: olympus.platform.v1.PlatformService.WriteLog:output_type -> olympus.platform.v1.StatusResponse
-	0, // 8: olympus.platform.v1.PlatformService.RecordMetric:output_type -> olympus.platform.v1.StatusResponse
-	0, // 9: olympus.platform.v1.PlatformService.ValidateSpec:output_type -> olympus.platform.v1.StatusResponse
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
+	7, // 5: olympus.platform.v1.PlatformService.ExecuteBuild:input_type -> olympus.platform.v1.CloudBuildRequest
+	0, // 6: olympus.platform.v1.PlatformService.PushImage:output_type -> olympus.platform.v1.StatusResponse
+	2, // 7: olympus.platform.v1.PlatformService.ListImages:output_type -> olympus.platform.v1.ListResponse
+	0, // 8: olympus.platform.v1.PlatformService.WriteLog:output_type -> olympus.platform.v1.StatusResponse
+	0, // 9: olympus.platform.v1.PlatformService.RecordMetric:output_type -> olympus.platform.v1.StatusResponse
+	0, // 10: olympus.platform.v1.PlatformService.ValidateSpec:output_type -> olympus.platform.v1.StatusResponse
+	8, // 11: olympus.platform.v1.PlatformService.ExecuteBuild:output_type -> olympus.platform.v1.CloudBuildResponse
+	6, // [6:12] is the sub-list for method output_type
+	0, // [0:6] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -429,7 +555,7 @@ func file_olympus_platform_v1_platform_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_olympus_platform_v1_platform_proto_rawDesc), len(file_olympus_platform_v1_platform_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

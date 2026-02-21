@@ -48,6 +48,9 @@ const (
 	// PlatformServiceValidateSpecProcedure is the fully-qualified name of the PlatformService's
 	// ValidateSpec RPC.
 	PlatformServiceValidateSpecProcedure = "/olympus.platform.v1.PlatformService/ValidateSpec"
+	// PlatformServiceExecuteBuildProcedure is the fully-qualified name of the PlatformService's
+	// ExecuteBuild RPC.
+	PlatformServiceExecuteBuildProcedure = "/olympus.platform.v1.PlatformService/ExecuteBuild"
 )
 
 // PlatformServiceClient is a client for the olympus.platform.v1.PlatformService service.
@@ -60,6 +63,8 @@ type PlatformServiceClient interface {
 	RecordMetric(context.Context, *connect.Request[v1.MetricRequest]) (*connect.Response[v1.StatusResponse], error)
 	// --- API Gateway (Expansion) ---
 	ValidateSpec(context.Context, *connect.Request[v1.SpecRequest]) (*connect.Response[v1.StatusResponse], error)
+	// --- Cloud Build (Deepening) ---
+	ExecuteBuild(context.Context, *connect.Request[v1.CloudBuildRequest]) (*connect.Response[v1.CloudBuildResponse], error)
 }
 
 // NewPlatformServiceClient constructs a client for the olympus.platform.v1.PlatformService service.
@@ -103,6 +108,12 @@ func NewPlatformServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			connect.WithSchema(platformServiceMethods.ByName("ValidateSpec")),
 			connect.WithClientOptions(opts...),
 		),
+		executeBuild: connect.NewClient[v1.CloudBuildRequest, v1.CloudBuildResponse](
+			httpClient,
+			baseURL+PlatformServiceExecuteBuildProcedure,
+			connect.WithSchema(platformServiceMethods.ByName("ExecuteBuild")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -113,6 +124,7 @@ type platformServiceClient struct {
 	writeLog     *connect.Client[v1.LogRequest, v1.StatusResponse]
 	recordMetric *connect.Client[v1.MetricRequest, v1.StatusResponse]
 	validateSpec *connect.Client[v1.SpecRequest, v1.StatusResponse]
+	executeBuild *connect.Client[v1.CloudBuildRequest, v1.CloudBuildResponse]
 }
 
 // PushImage calls olympus.platform.v1.PlatformService.PushImage.
@@ -140,6 +152,11 @@ func (c *platformServiceClient) ValidateSpec(ctx context.Context, req *connect.R
 	return c.validateSpec.CallUnary(ctx, req)
 }
 
+// ExecuteBuild calls olympus.platform.v1.PlatformService.ExecuteBuild.
+func (c *platformServiceClient) ExecuteBuild(ctx context.Context, req *connect.Request[v1.CloudBuildRequest]) (*connect.Response[v1.CloudBuildResponse], error) {
+	return c.executeBuild.CallUnary(ctx, req)
+}
+
 // PlatformServiceHandler is an implementation of the olympus.platform.v1.PlatformService service.
 type PlatformServiceHandler interface {
 	// --- Artifact Registry ---
@@ -150,6 +167,8 @@ type PlatformServiceHandler interface {
 	RecordMetric(context.Context, *connect.Request[v1.MetricRequest]) (*connect.Response[v1.StatusResponse], error)
 	// --- API Gateway (Expansion) ---
 	ValidateSpec(context.Context, *connect.Request[v1.SpecRequest]) (*connect.Response[v1.StatusResponse], error)
+	// --- Cloud Build (Deepening) ---
+	ExecuteBuild(context.Context, *connect.Request[v1.CloudBuildRequest]) (*connect.Response[v1.CloudBuildResponse], error)
 }
 
 // NewPlatformServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -189,6 +208,12 @@ func NewPlatformServiceHandler(svc PlatformServiceHandler, opts ...connect.Handl
 		connect.WithSchema(platformServiceMethods.ByName("ValidateSpec")),
 		connect.WithHandlerOptions(opts...),
 	)
+	platformServiceExecuteBuildHandler := connect.NewUnaryHandler(
+		PlatformServiceExecuteBuildProcedure,
+		svc.ExecuteBuild,
+		connect.WithSchema(platformServiceMethods.ByName("ExecuteBuild")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/olympus.platform.v1.PlatformService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PlatformServicePushImageProcedure:
@@ -201,6 +226,8 @@ func NewPlatformServiceHandler(svc PlatformServiceHandler, opts ...connect.Handl
 			platformServiceRecordMetricHandler.ServeHTTP(w, r)
 		case PlatformServiceValidateSpecProcedure:
 			platformServiceValidateSpecHandler.ServeHTTP(w, r)
+		case PlatformServiceExecuteBuildProcedure:
+			platformServiceExecuteBuildHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -228,4 +255,8 @@ func (UnimplementedPlatformServiceHandler) RecordMetric(context.Context, *connec
 
 func (UnimplementedPlatformServiceHandler) ValidateSpec(context.Context, *connect.Request[v1.SpecRequest]) (*connect.Response[v1.StatusResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("olympus.platform.v1.PlatformService.ValidateSpec is not implemented"))
+}
+
+func (UnimplementedPlatformServiceHandler) ExecuteBuild(context.Context, *connect.Request[v1.CloudBuildRequest]) (*connect.Response[v1.CloudBuildResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("olympus.platform.v1.PlatformService.ExecuteBuild is not implemented"))
 }
