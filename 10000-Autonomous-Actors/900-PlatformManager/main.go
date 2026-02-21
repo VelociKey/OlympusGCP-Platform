@@ -3,11 +3,13 @@ package main
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"os/exec"
 
 	"connectrpc.com/connect"
+	"github.com/getkin/kin-openapi/openapi3"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
@@ -51,6 +53,18 @@ func (s *PlatformServer) RecordMetric(ctx context.Context, req *connect.Request[
 
 func (s *PlatformServer) ValidateSpec(ctx context.Context, req *connect.Request[platformv1.SpecRequest]) (*connect.Response[platformv1.StatusResponse], error) {
 	slog.Info("Platform: API Gateway Spec Validation")
+	
+	loader := openapi3.NewLoader()
+	doc, err := loader.LoadFromData([]byte(req.Msg.OpenapiJson))
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid OpenAPI spec: %v", err))
+	}
+
+	if err := doc.Validate(ctx); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("OpenAPI validation failed: %v", err))
+	}
+
+	slog.Info("Platform: OpenAPI Spec Validated Successfully", "title", doc.Info.Title, "version", doc.Info.Version)
 	return connect.NewResponse(&platformv1.StatusResponse{Success: true}), nil
 }
 
